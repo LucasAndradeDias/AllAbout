@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 from .services import searchservices
 
@@ -11,7 +11,8 @@ handle_request = searchservices.service_web_scraping()
 @search_bp.route("/term")
 def term():
 
-    handle_request.download_page()
+    wc = handle_request.download_page("brasil")
 
+    print(wc)
 
-    return "hello world from blueprint"
+    return "hello world"
