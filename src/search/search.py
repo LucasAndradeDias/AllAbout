@@ -15,4 +15,6 @@ def term():
 
     print(wc)
 
-    return "hello world"
+    response_json = jsonify(links=str(wc))
+
+    return response_json,200

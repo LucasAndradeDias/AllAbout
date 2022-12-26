@@ -1,4 +1,4 @@
-import os, urllib3
+import os, urllib3,urllib.request
 from bs4 import BeautifulSoup
 
 
@@ -8,7 +8,13 @@ class service_web_scraping():
 
         soap = BeautifulSoup(html_content,"html.parser")
 
-        return soap.title
+
+
+        divs = soap.find
+
+        print(divs)
+
+        return divs
 
 
 
@@ -24,11 +30,15 @@ class service_web_scraping():
 
         for url in urls:
 
-            request = http.request("GET",url=url)
+            #request = http.request("GET",url=url)
+            urllib.request.urlretrieve(url=url,filename="t.html")
 
-            title = self.get_html_title(request.data)
+            # divs = self.get_html_title(request.data)
 
-            html_titles[url] = title
+
+
+
+            # html_titles[url] = title
 
         
         return html_titles
@@ -36,8 +46,7 @@ class service_web_scraping():
 
     def get_pages_to_search(self,term:str):
         urls = {
-            "https://news.google.com/search?q="+term+"&hl=pt-BR&gl=BR&ceid=BR%3Apt-419",
-            "https://www.reddit.com/search/?q="+term
+            "https://www.reddit.com/search/?q="+term+"&t=week&sort=top",
         }
         return urls
 
