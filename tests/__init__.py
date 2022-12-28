@@ -20,13 +20,26 @@ def search_term_forum():
 
     response = app.get('/search/forums',query_string=data)
 
+    assert response.status_code == 200
+
     res = json.loads(response.data.decode('utf-8'))
 
-
-    assert response.status_code == 200
     assert "reddit" in res
     assert res["reddit"] != []    
 
-    
 
+def search_term_news():
+
+    data = {'term':"brasil"}
+    response = app.get("/search/news",query_string=data)
+
+    assert response.status_code == 200
+
+    res =json.loads(response.data.decode("utf-8"))
+
+    assert "news" in res 
+    assert res["news"] != []
+
+    
+search_term_news()
 search_term_forum()
