@@ -14,21 +14,19 @@ def search_simple_term_without_arg():
 
 
 
-def search_simple_term_with_arg():  
+def search_term_forum():  
 
     data = {"term":"examples"}
 
-    response = app.get('/search',query_string=data)
+    response = app.get('/search/forums',query_string=data)
 
-    #res = json.loads(response.data.decode('utf-8'))
+    res = json.loads(response.data.decode('utf-8'))
 
 
     assert response.status_code == 200
-    #assert "reddit_posts" in res
-    # assert res["reddit_posts"] != []
+    assert "reddit" in res
+    assert res["reddit"] != []    
 
     
 
-
-#search_simple_term_without_arg()
-search_simple_term_with_arg()
+search_term_forum()
