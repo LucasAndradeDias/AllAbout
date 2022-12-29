@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 class service_for_news():
 
-    def scraping_cnn_brasil(self,html_content:str,news_number=5):
+    def scraping_cnn_brasil(self,html_content:str,news_number=30):
         
         soup = BeautifulSoup(html_content,"html.parser")
 
@@ -36,9 +36,35 @@ class service_for_news():
         return news
 
 
+    def scraping_g1(self,html_content:str,news_number=30):
+        soup = BeautifulSoup(html_content,"html.parser")
+
+        ul_list = soup.find_all("li",{"class":"widget widget--card widget--info"})
+
+        news = []
+
+        counter = 0
+
+        max_news = len(ul_list) if news_number > len(ul_list) else news_number
+
+        #getting a num of news from list
+        
+        while ( counter < max_news):
+            trash_words = {"videos"}
+
+            for i in ul_list[counter].a:
+                print(i)
+
+            counter+=1
+
+
+
+
+
     def news_search_pages(self,term:str,site=""):
         urls={
-            "cnn_brasil":{"url":"https://www.cnnbrasil.com.br/?s="+term+"&orderby=date&order=desc","func_name":"scraping_cnn_brasil"}
+            "cnn_brasil":{"url":"https://www.cnnbrasil.com.br/?s="+term+"&orderby=date&order=desc","func_name":"scraping_cnn_brasil"},
+            "g1":{"url":"https://g1.globo.com/busca/?q="+term+"&order=recent&from=now-1w","func_name":"scraping_g1"}
         }
 
         if site == "":
@@ -46,7 +72,6 @@ class service_for_news():
         
         else:
             return urls[site]
-
 
 
 class service_for_forums():
@@ -148,7 +173,6 @@ class service_control():
             print(error)
             return error
 
-
     def get_news_from_site_term(self,term:str):
 
         """
@@ -184,9 +208,6 @@ class service_control():
 
         
         return news_data
-
-
-
 
 
 

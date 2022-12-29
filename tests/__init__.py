@@ -40,6 +40,21 @@ def search_term_news():
     assert "news" in res 
     assert res["news"] != []
 
-    
+def search_term_alldata():
+
+    data = {'term':"brasil"}
+    response = app.get("/search/all",query_string=data)
+
+    assert response.status_code == 200
+
+    res =json.loads(response.data.decode("utf-8"))
+
+    assert "news" in res 
+    assert "forums" in res
+    assert res["news"] != []
+    assert res ["forums"] != []
+
+
 search_term_news()
+search_term_alldata()
 search_term_forum()

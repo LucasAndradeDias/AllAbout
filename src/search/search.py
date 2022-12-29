@@ -60,3 +60,28 @@ def get_news_term():
     return response_json,200
 
 
+## get all data
+@search_bp.route("/all")
+@verify_query_string
+def get_all_data():
+    term = request.args.get("term")
+
+    service = searchservices.service_control()
+
+    news = service.get_news_from_site_term(term=term)
+
+    forums = service.get_all_forums_data_term(term=term)
+
+    response_dict = {"news":news,"forums":forums}
+
+    response_json = jsonify(response_dict)
+
+    return response_json,200
+    
+
+
+
+
+
+
+
