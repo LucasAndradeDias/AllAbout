@@ -8,7 +8,6 @@ def create_app():
     #app config
 
 
-
     #register blueprints
 
     from .search import search

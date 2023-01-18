@@ -2,10 +2,11 @@ from flask import Blueprint, jsonify, request
 
 #local modules
 from .services.request_service import verify_query_string
-from .services import searchservices
+
+from .services import service_control
 
 
-
+# Blueprint config
 search_bp = Blueprint('search',__name__,url_prefix="/search")
 
 
@@ -31,7 +32,7 @@ def get_only_foruns_data():
     
     term_to_search = request.args.get("term")
 
-    data = searchservices.service_control().get_all_forums_data_term(term=term_to_search)
+    data = service_control().search_forum_term(term=term_to_search)
 
     response_json = jsonify(data)
 
@@ -49,12 +50,10 @@ def get_news_term():
     term = request.args.get("term")
 
     #getting news
-    news_array = searchservices.service_control().get_news_from_site_term(term)
-
-    response_dict = {"news":news_array} 
+    news_array = service_control().search_news_term(term)
 
     #convert into json to response
-    response_json = jsonify(response_dict)
+    response_json = jsonify(news_array)
 
     #response 
     return response_json,200
@@ -64,20 +63,30 @@ def get_news_term():
 @search_bp.route("/all")
 @verify_query_string
 def get_all_data():
+
+    #term to make the search
     term = request.args.get("term")
 
-    service = searchservices.service_control()
+    service = service_control()
+    try:
 
-    news = service.get_news_from_site_term(term=term)
+        datas_found = [service.search_news_term(term=term),service.search_forum_term(term=term)]
 
-    forums = service.get_all_forums_data_term(term=term)
+        
+        response_dict = {"found":datas_found}
 
-    response_dict = {"news":news,"forums":forums}
+        response_json = jsonify(response_dict)
 
-    response_json = jsonify(response_dict)
+        return response_json,200
 
-    return response_json,200
-    
+    except TypeError as err:
+        
+        print(err)
+
+        response_json = jsonify({"msg":"There were an error with your request"})
+
+        return response_json,500
+        
 
 
 
